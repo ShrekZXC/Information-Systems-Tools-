@@ -1,0 +1,82 @@
+ЗАДАНИЕ 1
+
+use my_db
+show tables;
+desc user_private_message;
+
+ЗАДАНИЕ 2
+
+select name Name from discussion_group where approve_required = true;
+
+ЗАДАНИЕ 3
+
+select greatest(message_id, user_from_id, user_to_id) ID, date(read_time) "READ", date(send_time) "SEND",
+message_text TEXT from user_private_message where send_time between '2020-11-01' and '2020-11-30' AND 
+message_text like'A%' AND DATEDIFF(read_time, send_time)<10;
+
+ЗАДАНИЕ 4
+
+select count(1), min(joined_time), max(approved_time) from users_to_discussion_groups where approved=1;
+
+ЗАДАНИЕ 5
+
+select user_id, registration_time from user order by 2 desc limit 20;
+
+ЗАДАНИЕ 6 
+
+with group_with_approve as (select * from discussion_group where approve_required=1), 
+new_groups as (select * from group_with_approve where creation_time>'2020-01-01') select * from new_groups;
+
+ЗАДАНИЕ 7
+
+select admin_user_id from discussion_group union select user_from_id from user_private_message;
+
+ЗАДАНИЕ 8 
+
+with cntsum as (select date(send_time) time ,  user_from_id, count(1) as cnt from user_private_message group by date(send_time), user_from_id)
+select count(*) cntuser, sum(cnt) sumcnt, time from cntsum group by time having cntuser=sumcnt order by time;
+
+ЗАДАНИЕ 9
+
+> use my_db
+switched to db my_db
+> show collections
+posts
+users
+
+ЗАДАНИЕ 10
+
+db.users.find({"score": {$gt: 100}, "topics": "as", "author":/.*example.ru.*/})
+
+ЗАДАНИЕ 11
+
+db.posts.insertMany([{"creation_date" : new ISODate(), "author" : "skbx@example.com", "topics" : ["mongodb"]},
+ {"creation_date" : ISODate('2021-31-12T00:00:00Z'), "author" : "skbx@example.ru"}]);
+
+ЗАДАНИЕ 12
+
+db.users.aggregate( [ {$match : {"visits": {$gt: 300}}}, {$project: {karma: "$karma", first_name: {$substr: ["$first_name", 0, 1]}}}, 
+{$group: {_id: "$first_name", summ: {$sum: "$karma"}}} ])
+
+ЗАДАНИЕ 13
+
+> set index "index precalculated content"
+> exists index
+> ttl index
+> set index "index precalculated content" ex 120
+> persist index
+
+ЗАДАНИЕ 14
+
+> zadd ratings 10 mysql
+> zadd ratings 20 postgresql
+> zadd ratings 30 mongodb
+> zadd ratings 40 redis
+> zincrby ratings 15 mysql
+> zpopmax ratings
+> zrank ratings mysql
+
+ЗАДАНИЕ 15
+
+> psubscribe events*
+> publish events42 "Hello there"
