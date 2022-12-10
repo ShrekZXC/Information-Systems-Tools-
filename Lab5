@@ -1,0 +1,63 @@
+Задание 1
+
+def reversed1(variable):
+    res = ''
+    for i in range(len(variable)-1, -1, -1):
+        res += variable[i]
+    return res
+
+
+stroka = input("Введите строку: ")
+stroka = stroka.lower()
+stroka = stroka.replace(' ', '')
+stroka2 = reversed1(stroka)
+
+
+if stroka == stroka2:
+    print("Да")
+else:
+    print("Нет")
+
+Задание 2
+
+print('Введите матрицу: \n')
+mat = []
+while True:
+    s = input()
+    if s == 'end':
+        break
+    else:
+        mat.append(list(map(int, s.split())))
+i = 0
+for i in range(len(mat)):
+    print(min(mat[i]))
+
+Задание 3
+
+spi = []
+dict = {}
+spi = input().lower().split()
+
+for i in range(len(spi)):
+    p = spi[i]
+    if p in dict:
+        dict[p] += 1
+    else:
+        dict[p] = 1
+for key, value in dict.items():
+    print(key, value)
+
+Задание 4 
+
+import pymysql
+connect = pymysql.connect(host="127.0.0.1",
+                          user="root",
+                          password="pass",
+                          db="my_db")
+with connect:
+    year = input("Введите год: ")
+    sql = "select first_name, last_name, date_of_birth from user where YEAR(date_of_birth) = %s"
+    cur = connect.cursor()
+    cur.execute(sql, year)
+    for rec in cur:
+        print(rec[0], rec[1])
